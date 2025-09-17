@@ -1,41 +1,42 @@
 // app/sitemap.ts
-
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = "https://image-compressor-kohl-kappa.vercel.app";
+
   return [
     {
-      url: "https://yourwebsite.com/",
+      url: `${baseUrl}/`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
     },
     {
-      url: "https://yourwebsite.com/tools/resize",
+      url: `${baseUrl}/tools/resize`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://yourwebsite.com/tools/convert",
+      url: `${baseUrl}/tools/convert`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://yourwebsite.com/tools/crop",
+      url: `${baseUrl}/tools/crop`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://yourwebsite.com/tools/pdf",
+      url: `${baseUrl}/tools/pdf`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://yourwebsite.com/tools/ocr",
+      url: `${baseUrl}/tools/ocr`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
