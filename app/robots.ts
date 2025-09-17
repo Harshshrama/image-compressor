@@ -7,8 +7,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/_next/"], // sensitive cheeze block karo
+      disallow: ["/api/", "/_next/"], // sensitive cheeze block
     },
-    sitemap: "https://yourwebsite.com/sitemap.xml",
+    sitemap: "https://image-compressor-kohl-kappa.vercel.app/sitemap.xml",
   };
 }
