@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Cropper, { Area } from "react-easy-crop";
+import { FaCrop, FaShieldAlt, FaMobileAlt, FaHeart, FaRegSmile, FaBolt } from "react-icons/fa";
 
 export default function CropTool() {
   const [image, setImage] = useState<string | null>(null);
@@ -14,6 +15,23 @@ export default function CropTool() {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const texts = {
+    en: {
+      title: "Crop Your Image",
+      subtitle: "Upload and crop your image with ease",
+      cropButton: "✅ Crop Image",
+      featuresTitle: "Why Use Our Crop Tool?",
+      features: [
+        { icon: <FaBolt />, title: "Fast & Smooth", desc: "Quick cropping without delays" },
+        { icon: <FaShieldAlt />, title: "Secure", desc: "Your images never leave your browser" },
+        { icon: <FaMobileAlt />, title: "Responsive", desc: "Works on all devices" },
+        { icon: <FaCrop />, title: "Flexible Crop", desc: "Choose aspect ratios or free crop" },
+        { icon: <FaHeart />, title: "Free & Easy", desc: "No signup required, very simple" },
+        { icon: <FaRegSmile />, title: "User-Friendly", desc: "Intuitive interface for everyone" },
+      ],
+    },
+  };
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
@@ -23,20 +41,19 @@ export default function CropTool() {
     }
   };
 
-  const getCroppedImg = async (
-    imageSrc: string,
-    cropPixels: Area
-  ) => {
+  const handleCropComplete = (_: Area, croppedAreaPixels: Area) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const getCroppedImg = async (imageSrc: string, cropPixels: Area) => {
     const imageEl = new Image();
     imageEl.src = imageSrc;
     await new Promise((resolve) => (imageEl.onload = resolve));
 
     const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // adjust canvas size
     canvas.width = cropPixels.width;
     canvas.height = cropPixels.height;
+    const ctx = canvas.getContext("2d");
 
     if (ctx) {
       ctx.save();
@@ -59,10 +76,6 @@ export default function CropTool() {
     return canvas.toDataURL("image/jpeg", 0.9);
   };
 
-  const handleCropComplete = (_: Area, croppedAreaPixels: Area) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  };
-
   const handleCrop = async () => {
     if (image && croppedAreaPixels) {
       const cropped = await getCroppedImg(image, croppedAreaPixels);
@@ -72,11 +85,16 @@ export default function CropTool() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold text-center mb-8">Crop Your Image</h1>
+      {/* Header */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl text-blue-600 font-bold mb-2">{texts.en.title}</h1>
+        <p className="text-gray-600 text-lg md:text-xl">{texts.en.subtitle}</p>
+      </div>
 
+      {/* Upload Box */}
       {!image && (
-        <div className="bg-white shadow-lg rounded-2xl p-8 text-center border-2 border-dashed border-gray-300">
-          <p className="text-gray-500 mb-4">Upload an image to crop</p>
+        <div className="bg-white shadow-lg rounded-3xl p-8 text-center border-2 border-dashed border-gray-300 mx-auto max-w-3xl">
+          <p className="text-gray-500 mb-4">{texts.en.subtitle}</p>
           <input
             type="file"
             accept="image/*"
@@ -86,17 +104,18 @@ export default function CropTool() {
           />
           <button
             onClick={() => inputRef.current?.click()}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-medium shadow-md"
+            className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition font-medium shadow-md"
           >
             Upload Image
           </button>
         </div>
       )}
 
+      {/* Main Grid */}
       {image && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-          {/* Left Side: Cropper */}
-          <div className="relative w-full h-96 bg-black rounded-xl overflow-hidden">
+          {/* Left: Cropper */}
+          <div className="relative w-full h-96 bg-black rounded-2xl overflow-hidden">
             {!croppedImage && (
               <Cropper
                 image={image}
@@ -114,22 +133,20 @@ export default function CropTool() {
               <img
                 src={croppedImage}
                 alt="Cropped"
-                className="w-full h-full object-contain rounded-lg"
+                className="w-full h-full object-contain rounded-2xl"
               />
             )}
           </div>
 
-          {/* Right Side: Controls + Preview */}
-          <div className="bg-white shadow-md rounded-2xl p-6">
+          {/* Right: Controls + Preview */}
+          <div className="bg-white shadow-md rounded-3xl p-6 space-y-6">
             {!croppedImage && (
               <>
                 {/* Aspect Ratio Selector */}
                 <label className="block font-medium mb-2">Aspect Ratio</label>
                 <select
                   value={aspect ?? 0}
-                  onChange={(e) =>
-                    setAspect(Number(e.target.value) || null)
-                  }
+                  onChange={(e) => setAspect(Number(e.target.value) || null)}
                   className="border rounded-lg p-2 w-full mb-4"
                 >
                   <option value={1}>1:1 (Square)</option>
@@ -138,10 +155,8 @@ export default function CropTool() {
                   <option value={0}>Free</option>
                 </select>
 
-                {/* Zoom Slider */}
-                <label className="block font-medium mb-2">
-                  Zoom: {zoom.toFixed(1)}x
-                </label>
+                {/* Zoom */}
+                <label className="block font-medium mb-2">Zoom: {zoom.toFixed(1)}x</label>
                 <input
                   type="range"
                   min={1}
@@ -152,10 +167,8 @@ export default function CropTool() {
                   className="w-full mb-4 accent-blue-600"
                 />
 
-                {/* Rotation Slider */}
-                <label className="block font-medium mb-2">
-                  Rotation: {rotation}°
-                </label>
+                {/* Rotation */}
+                <label className="block font-medium mb-2">Rotation: {rotation}°</label>
                 <input
                   type="range"
                   min={0}
@@ -168,9 +181,9 @@ export default function CropTool() {
 
                 <button
                   onClick={handleCrop}
-                  className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 font-medium transition shadow-md"
+                  className="w-full bg-green-600 text-white py-3 rounded-xl hover:bg-green-700 font-medium transition shadow-md"
                 >
-                  ✅ Crop Image
+                  {texts.en.cropButton}
                 </button>
               </>
             )}
@@ -181,12 +194,12 @@ export default function CropTool() {
                 <img
                   src={croppedImage}
                   alt="Preview"
-                  className="mx-auto rounded-lg border shadow mb-4 max-h-64"
+                  className="mx-auto rounded-2xl border shadow mb-4 max-h-64"
                 />
                 <a
                   href={croppedImage}
                   download="cropped-image.jpg"
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition font-medium shadow-md inline-block"
+                  className="bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition font-medium shadow-md inline-block"
                 >
                   ⬇ Download Cropped Image
                 </a>
@@ -195,6 +208,23 @@ export default function CropTool() {
           </div>
         </div>
       )}
+
+      {/* Features Section */}
+      <div className="text-center mt-16">
+        <h2 className="text-3xl md:text-4xl font-bold mb-8">{texts.en.featuresTitle}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {texts.en.features.map((feature, idx) => (
+            <div
+              key={idx}
+              className="bg-white p-6 rounded-3xl shadow hover:shadow-lg transition text-center"
+            >
+              <div className="flex justify-center items-center text-4xl text-blue-600 mb-4">{feature.icon}</div>
+              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+              <p className="text-gray-600 text-sm">{feature.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

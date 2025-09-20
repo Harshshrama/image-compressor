@@ -1,7 +1,7 @@
-// app/tools/resize/ResizeTool.tsx
 "use client";
 
 import { useState, useEffect } from "react";
+import { FaArrowsAltH, FaArrowsAltV, FaMobileAlt, FaBolt, FaShieldAlt, FaRegSmile, FaHeart } from "react-icons/fa";
 
 export default function ResizeTool() {
   const [image, setImage] = useState<string | null>(null);
@@ -11,6 +11,47 @@ export default function ResizeTool() {
   const [originalWidth, setOriginalWidth] = useState<number>(0);
   const [originalHeight, setOriginalHeight] = useState<number>(0);
   const [lockAspect, setLockAspect] = useState<boolean>(true);
+
+  const texts = {
+    en: {
+      title: "Resize Your Image",
+      subtitle: "Upload or drag & drop your image",
+      width: "Width (px)",
+      height: "Height (px)",
+      lock: "Maintain aspect ratio",
+      reset: "Reset to Original",
+      uploaded: "✅ Image uploaded successfully",
+      download: "⬇ Download Resized Image",
+      featuresTitle: "Why Use Our Resize Tool?",
+      features: [
+        { icon: <FaBolt />, title: "Fast Resizing", desc: "Resize images in seconds without lag" },
+        { icon: <FaShieldAlt />, title: "Safe & Secure", desc: "Images stay in your browser, never uploaded" },
+        { icon: <FaMobileAlt />, title: "Responsive Design", desc: "Works perfectly on mobile & desktop" },
+        { icon: <FaArrowsAltH />, title: "Custom Dimensions", desc: "Resize exactly to your desired width" },
+        { icon: <FaArrowsAltV />, title: "Aspect Lock", desc: "Keep original ratio or resize freely" },
+        { icon: <FaHeart />, title: "Free & Easy", desc: "No signup, simple interface for everyone" },
+      ],
+    },
+    hi: {
+      title: "अपनी इमेज का साइज बदलें",
+      subtitle: "अपनी इमेज अपलोड करें या ड्रैग & ड्रॉप करें",
+      width: "चौड़ाई (px)",
+      height: "ऊँचाई (px)",
+      lock: "आसपेक्ट रेशियो बनाए रखें",
+      reset: "मूल आकार पर रीसेट करें",
+      uploaded: "✅ इमेज सफलतापूर्वक अपलोड हो गई",
+      download: "⬇ रीसेज की गई इमेज डाउनलोड करें",
+      featuresTitle: "हमारा Resize Tool क्यों चुनें?",
+      features: [
+        { icon: <FaBolt />, title: "तेज़ रीसेजिंग", desc: "सेकंडों में इमेज का आकार बदलें" },
+        { icon: <FaShieldAlt />, title: "सुरक्षित", desc: "इमेज ब्राउज़र में ही रहती है, अपलोड नहीं होती" },
+        { icon: <FaMobileAlt />, title: "सभी डिवाइस पर", desc: "मोबाइल और डेस्कटॉप दोनों पर इस्तेमाल करें" },
+        { icon: <FaArrowsAltH />, title: "कस्टम डाइमेंशन", desc: "इच्छित चौड़ाई के अनुसार रीसेज करें" },
+        { icon: <FaArrowsAltV />, title: "आस्पेक्ट लॉक", desc: "मूल अनुपात बनाए रखें या स्वतंत्र रूप से बदलें" },
+        { icon: <FaHeart />, title: "फ्री & आसान", desc: "कोई साइनअप नहीं, सभी के लिए सरल इंटरफेस" },
+      ],
+    },
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -76,11 +117,16 @@ export default function ResizeTool() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold text-center mb-10">Resize Your Image</h1>
+      {/* Header */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl text-blue-600 font-bold mb-2">{texts.en.title}</h1>
+        <p className="text-gray-600 text-lg md:text-xl">{texts.en.subtitle}</p>
+      </div>
 
-      {!image && (
-        <div className="bg-white shadow-lg rounded-2xl p-8 text-center border-2 border-dashed border-gray-300 mx-auto max-w-6xl">
-          <p className="text-gray-500 mb-4">Drag & drop or upload an image</p>
+      {/* Upload & Resize */}
+      {!image ? (
+        <div className="bg-white shadow-lg rounded-3xl p-8 text-center border-2 border-dashed border-gray-300 mx-auto max-w-3xl">
+          <p className="text-gray-500 mb-4">{texts.en.subtitle}</p>
           <input
             type="file"
             accept="image/*"
@@ -90,22 +136,21 @@ export default function ResizeTool() {
           />
           <label
             htmlFor="uploadInput"
-            className="cursor-pointer bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-medium shadow-md inline-block"
+            className="cursor-pointer bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition font-medium shadow-md inline-block"
           >
             Upload Image
           </label>
         </div>
-      )}
-
-      {image && (
+      ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white shadow-lg rounded-2xl p-8 text-center border">
+          {/* Original Image */}
+          <div className="bg-white shadow-lg rounded-3xl p-8 text-center border">
             <img
               src={image}
               alt="Uploaded"
-              className="mx-auto rounded-lg border shadow max-h-72"
+              className="mx-auto rounded-xl border shadow max-h-72"
             />
-            <p className="mt-3 text-green-600 font-medium">✅ Image uploaded successfully</p>
+            <p className="mt-3 text-green-600 font-medium">{texts.en.uploaded}</p>
 
             <input
               type="file"
@@ -116,19 +161,20 @@ export default function ResizeTool() {
             />
             <label
               htmlFor="uploadInput"
-              className="mt-4 cursor-pointer bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-medium shadow-md inline-block"
+              className="mt-4 cursor-pointer bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition font-medium shadow-md inline-block"
             >
               Upload Another Image
             </label>
           </div>
 
+          {/* Resize Options */}
           <div className="space-y-6">
-            <div className="bg-white shadow-md rounded-2xl p-6">
+            <div className="bg-white shadow-md rounded-3xl p-6">
               <h3 className="font-semibold mb-4 text-lg">Resize Options</h3>
 
-              <div className="flex gap-4 mb-6">
+              <div className="flex gap-4 mb-6 flex-wrap">
                 <div className="flex flex-col w-1/2">
-                  <label className="text-sm text-gray-600 mb-1">Width (px)</label>
+                  <label className="text-sm text-gray-600 mb-1">{texts.en.width}</label>
                   <input
                     type="number"
                     value={width}
@@ -137,7 +183,7 @@ export default function ResizeTool() {
                   />
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <label className="text-sm text-gray-600 mb-1">Height (px)</label>
+                  <label className="text-sm text-gray-600 mb-1">{texts.en.height}</label>
                   <input
                     type="number"
                     value={height}
@@ -153,37 +199,54 @@ export default function ResizeTool() {
                   checked={lockAspect}
                   onChange={(e) => setLockAspect(e.target.checked)}
                 />
-                <span className="text-sm">Maintain aspect ratio</span>
+                <span className="text-sm">{texts.en.lock}</span>
               </label>
 
               <button
                 onClick={resetSize}
-                className="w-full bg-gray-500 text-white py-3 rounded-lg hover:bg-gray-600 font-medium transition"
+                className="w-full bg-gray-500 text-white py-3 rounded-xl hover:bg-gray-600 font-medium transition"
               >
-                Reset to Original
+                {texts.en.reset}
               </button>
             </div>
 
             {resizedImage && (
-              <div className="bg-white shadow-md rounded-2xl p-6 text-center">
+              <div className="bg-white shadow-md rounded-3xl p-6 text-center">
                 <h3 className="font-semibold mb-4 text-lg">Resized Image Preview</h3>
                 <img
                   src={resizedImage}
                   alt="Resized"
-                  className="mx-auto rounded-lg border shadow mb-6 max-h-80"
+                  className="mx-auto rounded-xl border shadow mb-6 max-h-80"
                 />
                 <a
                   href={resizedImage}
                   download="resized-image.jpg"
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition font-medium shadow-md inline-block"
+                  className="bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition font-medium shadow-md inline-block"
                 >
-                  ⬇ Download Resized Image
+                  {texts.en.download}
                 </a>
               </div>
             )}
           </div>
         </div>
       )}
+
+      {/* Features Section */}
+      <div className="text-center mt-16">
+        <h2 className="text-3xl md:text-4xl font-bold mb-8">{texts.en.featuresTitle}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {texts.en.features.map((feature, idx) => (
+            <div
+              key={idx}
+              className="bg-white p-6 rounded-3xl shadow hover:shadow-lg transition text-center"
+            >
+              <div className="flex justify-center items-center text-4xl text-blue-600 mb-4">{feature.icon}</div>
+              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+              <p className="text-gray-600 text-sm">{feature.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

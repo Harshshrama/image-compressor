@@ -1,80 +1,89 @@
 "use client";
-import { useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import { useState } from "react";
+import { FaChevronDown } from "react-icons/fa"; // arrow icon
+
+const links = [
+  { name: "Compressor Image", href: "/tools/compressor" },
+  { name: "Resize Image", href: "/tools/resize" },
+  { name: "Convert Image", href: "/tools/convert" },
+  { name: "Crop Image", href: "/tools/crop" },
+  { name: "Image to PDF", href: "/tools/pdf" },
+  { name: "Image to Text", href: "/tools/ocr" },
+];
+
+const moreTools = [
+  { name: "QR Code Generator", href: "/tools/qrcodegenerator" },
+  { name: "Text Overlay Watermark", href: "/tools/textoverlay" },
+  { name: "Color Picker / Palette Generator", href: "/tools/colorpicker" },
+];
+
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname(); // get current path
-
-  const links = [
-    { name: "Compressor Image", href: "/" },
-    { name: "Resize Image", href: "/tools/resize" },
-    { name: "Convert Image", href: "/tools/convert" },
-    { name: "Crop Image", href: "/tools/crop" },
-    { name: "Image to Pdf", href: "/tools/pdf" },
-    { name: "Image to Text", href: "/tools/ocr" },
-  ];
+  const pathname = usePathname();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-md fixed w-full top-0 z-50">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-blue-600">ImageTools</h1>
+    <>
+      <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/black_white_logo.png"
+              alt="MyImageTools Logo"
+              width={140}
+              height={50}
+              priority
+            />
+          </Link>
 
-        {/* Desktop Menu */}
-        <nav className="hidden md:flex gap-6 text-gray-700 font-medium">
-          {links.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={`hover:text-blue-600 transition-colors ${
-                pathname === link.href ? "text-blue-600" : ""
-              }`}
+          {/* Navigation */}
+          <nav className="flex space-x-6 items-center relative">
+            {links.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`transition-colors duration-300 ${
+                  pathname === link.href
+                    ? "text-blue-600 font-semibold"
+                    : "text-gray-700 hover:text-blue-600"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+
+            {/* More Tools Dropdown */}
+            <div
+              className="relative group"
             >
-              {link.name}
-            </a>
-          ))}
-        </nav>
+              <button className="flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors duration-300">
+                More Tools <FaChevronDown className="ml-1 text-sm" />
+              </button>
 
-        {/* Mobile Hamburger Button */}
-        <button
-          className="md:hidden text-gray-700 text-2xl"
-          onClick={() => setMenuOpen(true)}
-        >
-          ☰
-        </button>
-      </div>
-
-      {/* Mobile Slide Menu */}
-      <div
-        className={`fixed top-0 left-0 w-full h-full bg-white shadow-lg transform transition-transform duration-300 z-50 ${
-          menuOpen ? "translate-y-0" : "-translate-y-full"
-        }`}
-      >
-        <div className="flex justify-between items-center px-6 py-4 border-b">
-          <h1 className="text-xl font-bold text-blue-600">ImageTools</h1>
-          <button
-            className="text-gray-700 text-2xl"
-            onClick={() => setMenuOpen(false)}
-          >
-            ✕
-          </button>
+              {/* Dropdown menu */}
+              <div className="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                {moreTools.map((tool) => (
+                  <Link
+                    key={tool.name}
+                    href={tool.href}
+                    className={`block px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-600 ${
+                      pathname === tool.href ? "font-semibold text-blue-600" : ""
+                    }`}
+                  >
+                    {tool.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </nav>
         </div>
+      </header>
 
-        <nav className="flex flex-col items-start gap-6 px-6 py-6 text-gray-700 font-medium">
-          {links.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className={`w-full border-b hover:text-blue-600 transition-colors ${
-                pathname === link.href ? "text-blue-600" : ""
-              }`}
-            >
-              {link.name}
-            </a>
-          ))}
-        </nav>
-      </div>
-    </header>
+      <div className="pt-20"></div>
+    </>
   );
 }
