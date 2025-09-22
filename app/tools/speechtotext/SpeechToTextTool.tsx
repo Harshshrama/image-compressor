@@ -19,14 +19,14 @@ export default function SpeechToTextTool() {
     if (typeof window !== "undefined" && !recognitionRef.current) {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
-        const recognition = new SpeechRecognition();
+        const recognition: SpeechRecognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = lang;
 
         recognition.onresult = (event: SpeechRecognitionEvent) => {
           const transcript = Array.from(event.results)
-            .map((result) => result[0].transcript)
+            .map((result) => (result[0] as SpeechRecognitionAlternative).transcript)
             .join(" ");
           setText(transcript);
         };
