@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FaBolt, FaShieldAlt, FaRegFileAlt, FaRegSmile, FaMobileAlt, FaHeart, FaMicrophone, FaStop, FaCopy, FaDownload } from "react-icons/fa";
 
 const LANGUAGES = [
@@ -13,25 +13,28 @@ export default function SpeechToTextTool() {
   const [text, setText] = useState("");
   const [listening, setListening] = useState(false);
   const [lang, setLang] = useState("en-US");
-  const recognitionRef = useRef<null | SpeechRecognition>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
-  if (typeof window !== "undefined" && !recognitionRef.current) {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.lang = lang;
+  useEffect(() => {
+    if (typeof window !== "undefined" && !recognitionRef.current) {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = lang;
 
-      recognition.onresult = (event: any) => {
-        const transcript = Array.from(event.results)
-          .map((result: any) => result[0].transcript)
-          .join(" ");
-        setText(transcript);
-      };
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
+          const transcript = Array.from(event.results)
+            .map((result) => result[0].transcript)
+            .join(" ");
+          setText(transcript);
+        };
 
-      recognitionRef.current = recognition;
+        recognitionRef.current = recognition;
+      }
     }
-  }
+  }, [lang]);
 
   const startListening = () => {
     if (recognitionRef.current) {
