@@ -1,13 +1,12 @@
 "use client";
 import { useState } from "react";
-import { FaBolt, FaShieldAlt, FaImage, FaRegSmile, FaMobileAlt, FaHeart, FaCopy } from "react-icons/fa";
+import { FaBolt, FaShieldAlt, FaImage, FaRegSmile, FaMobileAlt, FaHeart } from "react-icons/fa";
 
 export default function OpenGraphTool() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [siteUrl, setSiteUrl] = useState("");
-  const [generatedCode, setGeneratedCode] = useState("");
 
   const features = [
     { icon: <FaBolt />, title: "Instant Preview", desc: "See how your page looks on social media instantly" },
@@ -18,27 +17,12 @@ export default function OpenGraphTool() {
     { icon: <FaRegSmile />, title: "User Friendly", desc: "Simple input fields and instant preview" },
   ];
 
-  const handleGenerate = () => {
-    const code = `<meta property="og:title" content="${title}" />
-<meta property="og:description" content="${description}" />
-<meta property="og:image" content="${imageUrl}" />
-<meta property="og:url" content="${siteUrl}" />`;
-    setGeneratedCode(code);
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(generatedCode);
-    alert("OG tags copied to clipboard!");
-  };
-
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl text-blue-600 font-bold mb-2">Open Graph Preview Tool</h1>
-        <p className="text-gray-600 text-lg md:text-xl">
-          Preview how your webpage will appear on social media platforms and generate OG tags.
-        </p>
+        <p className="text-gray-600 text-lg md:text-xl">Check how your webpage will appear when shared on social media platforms.</p>
       </div>
 
       {/* Main Tool */}
@@ -73,26 +57,6 @@ export default function OpenGraphTool() {
             onChange={(e) => setSiteUrl(e.target.value)}
             className="border rounded-xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-
-          <button
-            onClick={handleGenerate}
-            className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 font-medium shadow-md w-full"
-          >
-            Generate OG Tags
-          </button>
-
-          {/* Generated Code */}
-          {generatedCode && (
-            <div className="mt-4 bg-gray-100 p-4 rounded-xl text-left">
-              <pre className="overflow-x-auto text-sm">{generatedCode}</pre>
-              <button
-                onClick={handleCopy}
-                className="mt-2 bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 flex items-center gap-2"
-              >
-                <FaCopy /> Copy to Clipboard
-              </button>
-            </div>
-          )}
         </div>
 
         {/* Preview */}
