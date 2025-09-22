@@ -1,7 +1,21 @@
+// app/tools/speechtotext/SpeechToTextTool.tsx
 "use client";
-import { useState, useRef, useEffect } from "react";
-import { FaBolt, FaShieldAlt, FaRegFileAlt, FaRegSmile, FaMobileAlt, FaHeart, FaMicrophone, FaStop, FaCopy, FaDownload } from "react-icons/fa";
 
+import { useState, useRef, useEffect } from "react";
+import { 
+  FaBolt, 
+  FaShieldAlt, 
+  FaRegFileAlt, 
+  FaRegSmile, 
+  FaMobileAlt, 
+  FaHeart, 
+  FaMicrophone, 
+  FaStop, 
+  FaCopy, 
+  FaDownload 
+} from "react-icons/fa";
+
+// Languages
 const LANGUAGES = [
   { code: "en-US", label: "English" },
   { code: "hi-IN", label: "Hindi" },
@@ -9,25 +23,46 @@ const LANGUAGES = [
   { code: "fr-FR", label: "French" },
 ];
 
+// --- TypeScript declarations for SpeechRecognition ---
+declare global {
+  interface Window {
+    webkitSpeechRecognition: typeof SpeechRecognition;
+    SpeechRecognition: typeof SpeechRecognition;
+  }
+}
+
+interface SpeechRecognitionResult {
+  0: { transcript: string };
+  isFinal: boolean;
+}
+
+interface SpeechRecognitionEvent {
+  resultIndex: number;
+  results: SpeechRecognitionResult[];
+}
+
+// Main component
 export default function SpeechToTextTool() {
   const [text, setText] = useState("");
   const [listening, setListening] = useState(false);
   const [lang, setLang] = useState("en-US");
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
+  // Initialize SpeechRecognition
   useEffect(() => {
     if (typeof window !== "undefined" && !recognitionRef.current) {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SpeechRecognition) {
-        const recognition: SpeechRecognition = new SpeechRecognition();
+        const recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = lang;
 
-        recognition.onresult = (event: SpeechRecognitionEvent) => {
-          const transcript = Array.from(event.results)
-            .map((result) => (result[0] as SpeechRecognitionAlternative).transcript)
-            .join(" ");
+        recognition.onresult = (event: any) => {
+          let transcript = "";
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript + " ";
+          }
           setText(transcript);
         };
 
@@ -36,8 +71,9 @@ export default function SpeechToTextTool() {
     }
   }, [lang]);
 
+  // Start / Stop
   const startListening = () => {
-    if (recognitionRef.current) {
+    if (recognitionRef.current && !listening) {
       recognitionRef.current.lang = lang;
       recognitionRef.current.start();
       setListening(true);
@@ -45,12 +81,13 @@ export default function SpeechToTextTool() {
   };
 
   const stopListening = () => {
-    if (recognitionRef.current) {
+    if (recognitionRef.current && listening) {
       recognitionRef.current.stop();
       setListening(false);
     }
   };
 
+  // Copy & Download
   const copyText = () => {
     navigator.clipboard.writeText(text);
     alert("Copied to clipboard!");
@@ -66,6 +103,7 @@ export default function SpeechToTextTool() {
     URL.revokeObjectURL(url);
   };
 
+  // Features
   const features = [
     { icon: <FaBolt />, title: "Fast & Accurate", desc: "Real-time speech recognition" },
     { icon: <FaShieldAlt />, title: "Secure", desc: "All processing happens in your browser" },
@@ -80,7 +118,9 @@ export default function SpeechToTextTool() {
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl text-blue-600 font-bold mb-2">Speech to Text Tool</h1>
-        <p className="text-gray-600 text-lg md:text-xl">Convert your speech into text in real-time using our free online tool.</p>
+        <p className="text-gray-600 text-lg md:text-xl">
+          Convert your speech into text in real-time using our free online tool.
+        </p>
       </div>
 
       {/* Main Tool */}
