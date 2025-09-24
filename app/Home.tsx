@@ -1,6 +1,5 @@
 "use client";
 
-
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -17,6 +16,7 @@ import {
   FaHeart,
 } from "react-icons/fa";
 
+// Existing tools
 const tools = [
   {
     name: "Compressor Image",
@@ -44,7 +44,7 @@ const tools = [
   },
   {
     name: "Image to PDF",
-    href: "/tools/pdf",
+    href: "/tools/imagetopdf",
     desc: "Convert images into PDF files.",
     icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" />,
   },
@@ -56,6 +56,50 @@ const tools = [
   },
 ];
 
+// Extra tools to show on top
+const extraTools = [
+  {
+    name: "🗣️ Text to Speech",
+    href: "/tools/textspeech",
+    desc: "Convert text into natural-sounding speech.",
+    icon: <FaRegSmile className="text-3xl text-blue-600 mb-3" />,
+  },
+  {
+    name: "🏷️ Meta Tag Generator",
+    href: "/tools/metatag",
+    desc: "Generate SEO-friendly meta tags for your website.",
+    icon: <FaBolt className="text-3xl text-blue-600 mb-3" />,
+  },
+  {
+    name: "🔗 Open Graph Preview",
+    href: "/tools/opengraph",
+    desc: "Preview how your page looks when shared on social media.",
+    icon: <FaMobileAlt className="text-3xl text-blue-600 mb-3" />,
+  },
+  {
+    name: "✍️ Word Counter",
+    href: "/tools/wordcounter",
+    desc: "Count words, characters, and more instantly.",
+    icon: <FaHeart className="text-3xl text-blue-600 mb-3" />,
+  },
+  {
+    name: "🎨 Color Picker",
+    href: "/tools/colorpicker",
+    desc: "Pick colors easily and get HEX/RGB codes.",
+    icon: <FaShieldAlt className="text-3xl text-blue-600 mb-3" />,
+  },
+  {
+    name: "📑 Excel to PDF",
+    href: "/tools/excelpdf",
+    desc: "Convert Excel files into PDF quickly.",
+    icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" />,
+  },
+];
+
+// Merge extraTools on top of existing tools
+const allTools = [...extraTools, ...tools];
+
+// Features Section
 const features = [
   {
     icon: <FaRegSmile className="text-4xl text-blue-600 mx-auto mb-4" />,
@@ -104,11 +148,11 @@ export default function HomePage() {
         </Link>
       </section>
 
-{/* Tools Grid */}
+      {/* Tools Grid */}
       <section className="max-w-7xl mx-auto px-6 py-16">
         <h2 className="text-4xl font-bold text-center mb-12">Our Tools</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {tools.map((tool, index) => (
+          {allTools.map((tool, index) => (
             <motion.div
               key={tool.name}
               initial={{ opacity: 0, y: 50 }}
@@ -118,9 +162,7 @@ export default function HomePage() {
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-indigo-100 opacity-0 group-hover:opacity-100 transition duration-500"></div>
               <div className="relative z-10 text-center">
-                <div className="flex justify-center items-center mb-3">
-                  {tool.icon}
-                </div>
+                <div className="flex justify-center items-center mb-3">{tool.icon}</div>
                 <h3 className="text-xl font-semibold mb-2">{tool.name}</h3>
                 <p className="text-gray-600 mb-4">{tool.desc}</p>
                 <Link
@@ -164,24 +206,20 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-6 text-center">
           <h2 className="text-4xl font-bold mb-10">How It Works</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              "Upload your image",
-              "Choose your tool & settings",
-              "Download instantly",
-            ].map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.2 }}
-                className="p-6 bg-gray-50 rounded-xl shadow hover:shadow-md"
-              >
-                <span className="text-4xl font-bold text-blue-600">
-                  {i + 1}
-                </span>
-                <p className="mt-4 text-gray-700">{step}</p>
-              </motion.div>
-            ))}
+            {["Upload your image", "Choose your tool & settings", "Download instantly"].map(
+              (step, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.2 }}
+                  className="p-6 bg-gray-50 rounded-xl shadow hover:shadow-md"
+                >
+                  <span className="text-4xl font-bold text-blue-600">{i + 1}</span>
+                  <p className="mt-4 text-gray-700">{step}</p>
+                </motion.div>
+              )
+            )}
           </div>
         </div>
       </section>
@@ -189,9 +227,7 @@ export default function HomePage() {
       {/* FAQ */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center mb-10">
-            Frequently Asked Questions
-          </h2>
+          <h2 className="text-4xl font-bold text-center mb-10">Frequently Asked Questions</h2>
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-xl shadow">
               <h3 className="font-semibold">Is it free to use?</h3>
@@ -202,8 +238,7 @@ export default function HomePage() {
             <div className="bg-white p-6 rounded-xl shadow">
               <h3 className="font-semibold">Will my images be safe?</h3>
               <p className="text-gray-600">
-                Yes, your images are processed securely and never stored
-                permanently.
+                Yes, your images are processed securely and never stored permanently.
               </p>
             </div>
             <div className="bg-white p-6 rounded-xl shadow">
@@ -216,11 +251,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Footer */}
+      {/* CTA Footer
       <section className="bg-gradient-to-r from-blue-600 to-indigo-600 py-16 text-center text-white">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">
-          Ready to Edit Your Images?
-        </h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Edit Your Images?</h2>
         <p className="mb-8 text-lg">
           Start using our free tools today. No signup required!
         </p>
@@ -230,7 +263,7 @@ export default function HomePage() {
         >
           Get Started Free →
         </Link>
-      </section>
+      </section> */}
     </main>
   );
 }
