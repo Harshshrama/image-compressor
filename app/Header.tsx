@@ -1,126 +1,81 @@
 "use client";
-import { useState } from "react";
-import { FaBolt, FaShieldAlt, FaImage, FaRegSmile, FaMobileAlt, FaHeart, FaCopy } from "react-icons/fa";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { FaChevronDown } from "react-icons/fa";
 
-export default function OpenGraphTool() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [siteUrl, setSiteUrl] = useState("");
-  const [generatedCode, setGeneratedCode] = useState("");
+export default function Header() {
+  const pathname = usePathname();
 
-  const features = [
-    { icon: <FaBolt />, title: "Instant Preview", desc: "See how your page looks on social media instantly" },
-    { icon: <FaShieldAlt />, title: "Safe & Secure", desc: "All processing happens in your browser" },
-    { icon: <FaImage />, title: "Visual Preview", desc: "Check image, title, and description exactly" },
-    { icon: <FaMobileAlt />, title: "Responsive", desc: "Preview works on desktop & mobile" },
-    { icon: <FaHeart />, title: "Free Tool", desc: "No signup required" },
-    { icon: <FaRegSmile />, title: "User Friendly", desc: "Simple input fields and instant preview" },
-  ];
-
-  const handleGenerate = () => {
-    const code = `<meta property="og:title" content="${title}" />
-<meta property="og:description" content="${description}" />
-<meta property="og:image" content="${imageUrl}" />
-<meta property="og:url" content="${siteUrl}" />`;
-    setGeneratedCode(code);
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(generatedCode);
-    alert("OG tags copied to clipboard!");
-  };
+  const linkClass = (href: string) =>
+    `hover:text-blue-600 ${
+      pathname === href ? "text-blue-600 font-semibold" : "text-gray-700"
+    }`;
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl text-blue-600 font-bold mb-2">Open Graph Preview Tool</h1>
-        <p className="text-gray-600 text-lg md:text-xl">
-          Preview how your webpage will appear on social media platforms and generate OG tags.
-        </p>
-      </div>
-
-      {/* Main Tool */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-        {/* Input Form */}
-        <div className="bg-white shadow-lg rounded-3xl p-8 text-center space-y-4">
-          <input
-            type="text"
-            placeholder="Page Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="border rounded-xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="text"
-            placeholder="Page Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="border rounded-xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="text"
-            placeholder="Image URL"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            className="border rounded-xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="text"
-            placeholder="Website URL"
-            value={siteUrl}
-            onChange={(e) => setSiteUrl(e.target.value)}
-            className="border rounded-xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-
-          <button
-            onClick={handleGenerate}
-            className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 font-medium shadow-md w-full"
-          >
-            Generate OG Tags
-          </button>
-
-          {/* Generated Code */}
-          {generatedCode && (
-            <div className="mt-4 bg-gray-100 p-4 rounded-xl text-left">
-              <pre className="overflow-x-auto text-sm">{generatedCode}</pre>
-              <button
-                onClick={handleCopy}
-                className="mt-2 bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 flex items-center gap-2"
-              >
-                <FaCopy /> Copy to Clipboard
-              </button>
-            </div>
-          )}
+    <header className="bg-white border-b shadow-sm">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <span className="bg-blue-600 text-white font-bold px-2 py-1 rounded">
+            IMAGE
+          </span>
+          <span className="border px-2 py-1 font-medium">TOOLS</span>
         </div>
 
-        {/* Preview */}
-        <div className="bg-white shadow-lg rounded-3xl p-6 flex flex-col justify-center items-center">
-          <div className="w-full max-w-md border rounded-xl overflow-hidden shadow">
-            {imageUrl && <img src={imageUrl} alt="OG Image" className="w-full h-40 object-cover" />}
-            <div className="p-4 text-left">
-              <h3 className="font-semibold text-lg mb-1">{title || "Page Title"}</h3>
-              <p className="text-gray-600 text-sm">{description || "Page Description"}</p>
-              {siteUrl && <p className="text-blue-600 text-xs mt-2">{siteUrl}</p>}
+        {/* Menu */}
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium relative">
+          <Link href="/tools/compressor" className={linkClass("/tools/compressor")}>
+            Compressor Image
+          </Link>
+          <Link href="/tools/resize" className={linkClass("/tools/resize")}>
+            Resize Image
+          </Link>
+          <Link href="/tools/convert" className={linkClass("/tools/convert")}>
+            Convert Image
+          </Link>
+          <Link href="/tools/crop" className={linkClass("/tools/crop")}>
+            Crop Image
+          </Link>
+          <Link href="/tools/imagetopdf" className={linkClass("/tools/imagetopdf")}>
+            Image to PDF
+          </Link>
+          <Link href="/tools/ocr" className={linkClass("/tools/ocr")}>
+            Image to Text
+          </Link>
+
+          {/* Dropdown on hover */}
+          <div className="relative group">
+            <button
+              className="flex items-center gap-1 text-gray-700 hover:text-blue-600"
+            >
+              More Tools <FaChevronDown className="text-xs" />
+            </button>
+            <div className="absolute right-0 mt-2 bg-white shadow-lg border rounded-lg w-56 p-2 z-50 hidden group-hover:block">
+              {/* <Link href="/tools/speechtotext" className={`${linkClass("/tools/speechtotext")} block px-4 py-2 hover:bg-gray-100`}>
+                🎙️ Speech to Text
+              </Link> */}
+              <Link href="/tools/textspeech" className={`${linkClass("/tools/textspeech")} block px-4 py-2 hover:bg-gray-100`}>
+                🗣️ Text to Speech
+              </Link>
+              <Link href="/tools/metatag" className={`${linkClass("/tools/metatag")} block px-4 py-2 hover:bg-gray-100`}>
+                🏷️ Meta Tag Generator
+              </Link>
+              <Link href="/tools/opengraph" className={`${linkClass("/tools/opengraph")} block px-4 py-2 hover:bg-gray-100`}>
+                🔗 Open Graph Preview
+              </Link>
+              <Link href="/tools/wordcounter" className={`${linkClass("/tools/wordcounter")} block px-4 py-2 hover:bg-gray-100`}>
+                ✍️ Word Counter
+              </Link>
+              <Link href="/tools/colorpicker" className={`${linkClass("/tools/colorpicker")} block px-4 py-2 hover:bg-gray-100`}>
+                🎨 Color Picker
+              </Link>
+              <Link href="/tools/excelpdf" className={`${linkClass("/tools/excelpdf")} block px-4 py-2 hover:bg-gray-100`}>
+                📑 Excel to PDF
+              </Link>
             </div>
           </div>
-        </div>
+        </nav>
       </div>
-
-      {/* Features Section */}
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-8">Why Use Our Tool?</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {features.map((f, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-3xl shadow hover:shadow-lg transition text-center">
-              <div className="flex justify-center items-center text-4xl text-blue-600 mb-4">{f.icon}</div>
-              <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
-              <p className="text-gray-600 text-sm">{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+    </header>
   );
 }
