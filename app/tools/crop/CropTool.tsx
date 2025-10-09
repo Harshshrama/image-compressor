@@ -209,22 +209,7 @@ export default function CropTool() {
         </div>
       )}
 
-      {/* Features Section */}
-      <div className="text-center mt-16">
-        <h2 className="text-3xl md:text-4xl font-bold mb-8">{texts.en.featuresTitle}</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {texts.en.features.map((feature, idx) => (
-            <div
-              key={idx}
-              className="bg-white p-6 rounded-3xl shadow hover:shadow-lg transition text-center"
-            >
-              <div className="flex justify-center items-center text-4xl text-blue-600 mb-4">{feature.icon}</div>
-              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm">{feature.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      
     </div>
   );
 }

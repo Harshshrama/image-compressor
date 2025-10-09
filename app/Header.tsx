@@ -37,7 +37,7 @@ export default function Header() {
           <Link href="/tools/resize" className={linkClass("/tools/resize")}>Resize Image</Link>
           <Link href="/tools/convert" className={linkClass("/tools/convert")}>Convert Image</Link>
           <Link href="/tools/crop" className={linkClass("/tools/crop")}>Crop Image</Link>
-          <Link href="/tools/imagetopdf" className={linkClass("/tools/imagetopdf")}>Image to PDF</Link>
+          <Link href="/tools/pdf" className={linkClass("/tools/pdf")}>Image to PDF</Link>
           <Link href="/tools/ocr" className={linkClass("/tools/ocr")}>Image to Text</Link>
 
           <div className="relative group">

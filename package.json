@@ -13,14 +13,17 @@
     "@tensorflow-models/body-pix": "^2.2.1",
     "@tensorflow/tfjs": "^4.22.0",
     "framer-motion": "^12.23.15",
+    "gray-matter": "^4.0.3",
     "jspdf": "^3.0.2",
     "next": "15.5.2",
-    "pdfjs-dist": "^5.4.149",
+    "pdfjs-dist": "^5.4.296",
     "qrcode.react": "^4.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-easy-crop": "^5.5.0",
     "react-icons": "^5.5.0",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
     "tesseract.js": "^6.0.1"
   },
   "devDependencies": {

@@ -1,8 +1,15 @@
 "use client";
 import { useState } from "react";
-import { FaBolt, FaImage, FaMobileAlt, FaShieldAlt, FaHeart, FaRegSmile } from "react-icons/fa";
+import {
+  FaBolt,
+  FaImage,
+  FaMobileAlt,
+  FaShieldAlt,
+  FaHeart,
+  FaRegSmile,
+} from "react-icons/fa";
 
-export default function CompresTool() {
+export default function CompressorTool() {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [compressedUrl, setCompressedUrl] = useState<string | null>(null);
@@ -27,12 +34,32 @@ export default function CompresTool() {
       kbToMb: "KB → MB (Increase Size)",
       featuresTitle: "Why Choose Our Tool?",
       features: [
-        { icon: <FaBolt />, title: "Fast Compression", desc: "Get compressed images in seconds" },
-        { icon: <FaShieldAlt />, title: "Safe & Secure", desc: "Your images never leave your browser" },
-        { icon: <FaImage />, title: "High Quality", desc: "Maintain image clarity after compression" },
-        { icon: <FaMobileAlt />, title: "Responsive Design", desc: "Use on any device easily" },
+        {
+          icon: <FaBolt />,
+          title: "Fast Compression",
+          desc: "Get compressed images in seconds",
+        },
+        {
+          icon: <FaShieldAlt />,
+          title: "Safe & Secure",
+          desc: "Your images never leave your browser",
+        },
+        {
+          icon: <FaImage />,
+          title: "High Quality",
+          desc: "Maintain image clarity after compression",
+        },
+        {
+          icon: <FaMobileAlt />,
+          title: "Responsive Design",
+          desc: "Use on any device easily",
+        },
         { icon: <FaHeart />, title: "Free to Use", desc: "No hidden charges or signup required" },
-        { icon: <FaRegSmile />, title: "User Friendly", desc: "Simple drag & drop interface" },
+        {
+          icon: <FaRegSmile />,
+          title: "User Friendly",
+          desc: "Simple drag & drop interface",
+        },
       ],
     },
     hi: {
@@ -50,12 +77,24 @@ export default function CompresTool() {
       kbToMb: "KB → MB (साइज बढ़ाएँ)",
       featuresTitle: "हमारा टूल क्यों चुनें?",
       features: [
-        { icon: <FaBolt />, title: "तेज़ कम्प्रेशन", desc: "सेकंडों में कम्प्रेस्ड इमेज पाएं" },
+        {
+          icon: <FaBolt />,
+          title: "तेज़ कम्प्रेशन",
+          desc: "सेकंडों में कम्प्रेस्ड इमेज पाएं",
+        },
         { icon: <FaShieldAlt />, title: "सुरक्षित", desc: "आपकी इमेज ब्राउज़र में ही रहती है" },
         { icon: <FaImage />, title: "उच्च गुणवत्ता", desc: "कम्प्रेशन के बाद इमेज क्लियर रहे" },
-        { icon: <FaMobileAlt />, title: "सभी डिवाइस पर", desc: "मोबाइल या डेस्कटॉप, आसानी से इस्तेमाल करें" },
+        {
+          icon: <FaMobileAlt />,
+          title: "सभी डिवाइस पर",
+          desc: "मोबाइल या डेस्कटॉप, आसानी से इस्तेमाल करें",
+        },
         { icon: <FaHeart />, title: "फ्री टूल", desc: "कोई Hidden Charges या Signup नहीं" },
-        { icon: <FaRegSmile />, title: "यूजर फ्रेंडली", desc: "सरल Drag & Drop Interface" },
+        {
+          icon: <FaRegSmile />,
+          title: "यूजर फ्रेंडली",
+          desc: "सरल Drag & Drop Interface",
+        },
       ],
     },
   };
@@ -77,20 +116,15 @@ export default function CompresTool() {
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
+    if (e.type === "dragenter" || e.type === "dragover") setDragActive(true);
+    else if (e.type === "dragleave") setDragActive(false);
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFileChange(e.dataTransfer.files[0]);
-    }
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFileChange(e.dataTransfer.files[0]);
   };
 
   const handleCompress = () => {
@@ -123,7 +157,6 @@ export default function CompresTool() {
 
         ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-        // Fake progress animation
         let progressVal = 0;
         const interval = setInterval(() => {
           progressVal += 15;
@@ -265,19 +298,7 @@ export default function CompresTool() {
         )}
       </div>
 
-      {/* Features Section */}
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-8">{texts[lang].featuresTitle}</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {texts[lang].features.map((feature, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-3xl shadow hover:shadow-lg transition text-center">
-              <div className="flex justify-center items-center text-4xl text-blue-600 mb-4">{feature.icon}</div>
-              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm">{feature.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      
     </div>
   );
 }

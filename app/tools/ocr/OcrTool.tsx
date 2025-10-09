@@ -115,22 +115,7 @@ export default function OcrTool() {
         )}
       </div>
 
-      {/* Features Section */}
-      <div className="text-center mt-16">
-        <h2 className="text-3xl md:text-4xl font-bold mb-8">Why Use Our OCR Tool?</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {features.map((f, idx) => (
-            <div
-              key={idx}
-              className="bg-white p-6 rounded-2xl shadow hover:shadow-lg transition text-center"
-            >
-              {f.icon}
-              <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
-              <p className="text-gray-600 text-sm">{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      
     </div>
   );
 }
