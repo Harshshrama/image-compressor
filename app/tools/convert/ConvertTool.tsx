@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { FaFileImage, FaBolt, FaShieldAlt, FaMobileAlt, FaHeart, FaRegSmile } from "react-icons/fa";
+import { FaFileImage, FaBolt, FaShieldAlt, FaMobileAlt, FaHeart, FaRegSmile, FaSpinner } from "react-icons/fa";
 
 export default function ConvertTool() {
   const [image, setImage] = useState<string | null>(null);
   const [convertedImages, setConvertedImages] = useState<{ format: string; dataUrl: string }[]>([]);
   const [selectedFormats, setSelectedFormats] = useState<string[]>(["jpeg"]);
   const [quality, setQuality] = useState<number>(90);
+  const [isDragging, setIsDragging] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [fileName, setFileName] = useState<string>("converted-image");
 
   const texts = {
     en: {
@@ -19,24 +22,28 @@ export default function ConvertTool() {
       qualityDesc: "Lower quality = smaller file size, but less clarity",
       convertButton: "Convert Selected Formats",
       download: "⬇ Download",
-      featuresTitle: "Why Use Our Convert Tool?",
-      features: [
-        { icon: <FaBolt />, title: "Fast Conversion", desc: "Convert images in seconds without delay" },
-        { icon: <FaShieldAlt />, title: "Safe & Secure", desc: "Your images stay in the browser only" },
-        { icon: <FaMobileAlt />, title: "Responsive", desc: "Works on desktop and mobile devices" },
-        { icon: <FaFileImage />, title: "Multiple Formats", desc: "JPEG, PNG, WebP support" },
-        { icon: <FaHeart />, title: "Free & Easy", desc: "No signup required, very simple interface" },
-        { icon: <FaRegSmile />, title: "User-Friendly", desc: "Clean design and easy to use" },
-      ],
     },
+  };
+
+  const handleImage = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload a valid image file");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Image too large (max 10MB)");
+      return;
+    }
+    setFileName(file.name.split(".")[0]);
+    const reader = new FileReader();
+    reader.onload = (ev) => setImage(ev.target?.result as string);
+    reader.readAsDataURL(file);
+    setConvertedImages([]);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (ev) => setImage(ev.target?.result as string);
-      reader.readAsDataURL(e.target.files[0]);
-      setConvertedImages([]);
+      handleImage(e.target.files[0]);
     }
   };
 
@@ -48,8 +55,27 @@ export default function ConvertTool() {
     }
   };
 
+  // Drag & Drop Handlers
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => e.preventDefault();
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleImage(e.dataTransfer.files[0]);
+    }
+  };
+
   const handleConvert = () => {
     if (!image || selectedFormats.length === 0) return;
+    setLoading(true);
     const img = new Image();
     img.src = image;
     img.onload = () => {
@@ -71,6 +97,7 @@ export default function ConvertTool() {
         }
       });
       setConvertedImages(results);
+      setLoading(false);
     };
   };
 
@@ -84,8 +111,15 @@ export default function ConvertTool() {
 
       {/* Upload Box */}
       {!image && (
-        <div className="bg-white shadow-lg rounded-3xl p-8 text-center border-2 border-dashed border-gray-300 mx-auto max-w-3xl">
-          <p className="text-gray-500 mb-4">{texts.en.subtitle}</p>
+        <div
+          className={`bg-white shadow-lg rounded-3xl p-8 text-center border-2 border-dashed mx-auto max-w-3xl cursor-pointer transition
+          ${isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 hover:bg-gray-50"}`}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+        >
+          <p className="text-gray-500 mb-4">Drag & drop your image here</p>
           <input
             type="file"
             accept="image/*"
@@ -113,6 +147,7 @@ export default function ConvertTool() {
               className="mx-auto rounded-xl border shadow max-h-72"
             />
             <p className="mt-3 text-green-600 font-medium">{texts.en.uploaded}</p>
+
             <input
               type="file"
               accept="image/*"
@@ -176,32 +211,36 @@ export default function ConvertTool() {
             {convertedImages.length > 0 && (
               <div className="bg-white shadow-md rounded-3xl p-6">
                 <h3 className="font-semibold mb-6 text-lg text-center">Converted Images</h3>
-                <div className="grid gap-6 md:grid-cols-2">
-                  {convertedImages.map(({ format, dataUrl }) => (
-                    <div key={format} className="border rounded-xl p-4 text-center shadow">
-                      <p className="mb-2 font-medium">{format.toUpperCase()}</p>
-                      <img
-                        src={dataUrl}
-                        alt={format}
-                        className="mx-auto rounded border mb-3 max-h-40"
-                      />
-                      <a
-                        href={dataUrl}
-                        download={`converted-image.${format}`}
-                        className="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition inline-block"
-                      >
-                        {texts.en.download}
-                      </a>
-                    </div>
-                  ))}
-                </div>
+                {loading ? (
+                  <div className="flex justify-center items-center h-48">
+                    <FaSpinner className="animate-spin text-3xl text-blue-600" />
+                  </div>
+                ) : (
+                  <div className="grid gap-6 md:grid-cols-2">
+                    {convertedImages.map(({ format, dataUrl }) => (
+                      <div key={format} className="border rounded-xl p-4 text-center shadow">
+                        <p className="mb-2 font-medium">{format.toUpperCase()}</p>
+                        <img
+                          src={dataUrl}
+                          alt={format}
+                          className="mx-auto rounded border mb-3 max-h-40"
+                        />
+                        <a
+                          href={dataUrl}
+                          download={`${fileName}-converted.${format}`}
+                          className="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition inline-block"
+                        >
+                          {texts.en.download}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
         </div>
       )}
-
-      
     </div>
   );
 }

@@ -48,9 +48,27 @@ const features = [
 
 // Example static blog posts (replace with dynamic fetching later)
 const blogPosts = [
-  { title: "How to Compress Images Without Losing Quality", slug: "compress-images", date: "Oct 1, 2025" },
-  { title: "10 Tips to Resize Images Online Easily", slug: "resize-images-tips", date: "Sep 28, 2025" },
-  { title: "Convert Images to PDF in Seconds", slug: "convert-images-pdf", date: "Sep 20, 2025" },
+  {
+    title: "How to Compress Images Without Losing Quality",
+    slug: "compress-images",
+    date: "Oct 1, 2025",
+    description: "Learn how to reduce image size without affecting quality using modern tools.",
+    image: "/blog/compress.jpg",
+  },
+  {
+    title: "10 Tips to Resize Images Online Easily",
+    slug: "resize-images-tips",
+    date: "Sep 28, 2025",
+    description: "Simple and effective tips to resize images for websites and social media.",
+    image: "/blog/resize.jpg",
+  },
+  {
+    title: "Convert Images to PDF in Seconds",
+    slug: "convert-images-pdf",
+    date: "Sep 20, 2025",
+    description: "Quick guide to convert images into PDF files instantly.",
+    image: "/blog/convert.jpg",
+  },
 ];
 
 export default function ToolsLayout({ children }: { children: React.ReactNode }) {
@@ -102,20 +120,44 @@ export default function ToolsLayout({ children }: { children: React.ReactNode })
 
         {/* Blog Section */}
         <section className="max-w-7xl mx-auto px-6 py-16">
-          <h2 className="text-4xl font-bold text-center mb-12">Latest Blog Posts</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
-              <Link
-                key={index}
-                href={`/blog/${post.slug}`}
-                className="block bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl hover:scale-[1.02] transition"
-              >
-                <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-                <p className="text-gray-400 text-sm">{post.date}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
+  <h2 className="text-4xl font-bold text-center mb-12">
+    Latest Blog Posts
+  </h2>
+
+  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {blogPosts.map((post, index) => (
+      <Link
+        key={index}
+        href={`/blog/${post.slug}`}
+        className="block bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition duration-300"
+      >
+        {/* Image */}
+        <div className="h-52 w-full overflow-hidden">
+          <img
+            src={post.image}
+            alt={post.title}
+            className="w-full h-full object-cover hover:scale-110 transition duration-300"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="p-6">
+          <h3 className="text-xl font-semibold mb-3">
+            {post.title}
+          </h3>
+
+          <p className="text-gray-600 text-sm mb-4">
+            {post.description}
+          </p>
+
+          <p className="text-gray-400 text-xs">
+            {post.date}
+          </p>
+        </div>
+      </Link>
+    ))}
+  </div>
+</section>
       </main>
     </>
   );

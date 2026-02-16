@@ -17,7 +17,7 @@ export default function Header() {
 
   return (
     <header className="bg-white shadow-sm fixed top-0 left-0 w-full z-50">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-10 py-3">
         {/* Logo */}
         <div className="flex items-center gap-2 z-50 relative">
           <Link href="/" onClick={handleLinkClick}>
@@ -32,7 +32,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex items-center gap-6 text-md font-medium relative">
+        <nav className="hidden md:flex items-center gap-6 text-md font-bold relative">
           <Link href="/tools/compressor" className={linkClass("/tools/compressor")}>Compressor Image</Link>
           <Link href="/tools/resize" className={linkClass("/tools/resize")}>Resize Image</Link>
           <Link href="/tools/convert" className={linkClass("/tools/convert")}>Convert Image</Link>

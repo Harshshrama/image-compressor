@@ -16,6 +16,7 @@
     "gray-matter": "^4.0.3",
     "jspdf": "^3.0.2",
     "next": "^16.1.6",
+    "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.4.296",
     "qrcode.react": "^4.2.0",
     "react": "19.1.0",

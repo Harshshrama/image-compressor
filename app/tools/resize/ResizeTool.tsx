@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaArrowsAltH, FaArrowsAltV, FaMobileAlt, FaBolt, FaShieldAlt, FaRegSmile, FaHeart } from "react-icons/fa";
+import { FaArrowsAltH, FaArrowsAltV, FaMobileAlt, FaBolt, FaShieldAlt, FaHeart, FaSpinner } from "react-icons/fa";
 
 export default function ResizeTool() {
   const [image, setImage] = useState<string | null>(null);
@@ -11,70 +11,58 @@ export default function ResizeTool() {
   const [originalWidth, setOriginalWidth] = useState<number>(0);
   const [originalHeight, setOriginalHeight] = useState<number>(0);
   const [lockAspect, setLockAspect] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [fileName, setFileName] = useState<string>("resized-image");
 
-  const texts = {
-    en: {
-      title: "Resize Your Image",
-      subtitle: "Upload or drag & drop your image",
-      width: "Width (px)",
-      height: "Height (px)",
-      lock: "Maintain aspect ratio",
-      reset: "Reset to Original",
-      uploaded: "✅ Image uploaded successfully",
-      download: "⬇ Download Resized Image",
-      featuresTitle: "Why Use Our Resize Tool?",
-      features: [
-        { icon: <FaBolt />, title: "Fast Resizing", desc: "Resize images in seconds without lag" },
-        { icon: <FaShieldAlt />, title: "Safe & Secure", desc: "Images stay in your browser, never uploaded" },
-        { icon: <FaMobileAlt />, title: "Responsive Design", desc: "Works perfectly on mobile & desktop" },
-        { icon: <FaArrowsAltH />, title: "Custom Dimensions", desc: "Resize exactly to your desired width" },
-        { icon: <FaArrowsAltV />, title: "Aspect Lock", desc: "Keep original ratio or resize freely" },
-        { icon: <FaHeart />, title: "Free & Easy", desc: "No signup, simple interface for everyone" },
-      ],
-    },
-    hi: {
-      title: "अपनी इमेज का साइज बदलें",
-      subtitle: "अपनी इमेज अपलोड करें या ड्रैग & ड्रॉप करें",
-      width: "चौड़ाई (px)",
-      height: "ऊँचाई (px)",
-      lock: "आसपेक्ट रेशियो बनाए रखें",
-      reset: "मूल आकार पर रीसेट करें",
-      uploaded: "✅ इमेज सफलतापूर्वक अपलोड हो गई",
-      download: "⬇ रीसेज की गई इमेज डाउनलोड करें",
-      featuresTitle: "हमारा Resize Tool क्यों चुनें?",
-      features: [
-        { icon: <FaBolt />, title: "तेज़ रीसेजिंग", desc: "सेकंडों में इमेज का आकार बदलें" },
-        { icon: <FaShieldAlt />, title: "सुरक्षित", desc: "इमेज ब्राउज़र में ही रहती है, अपलोड नहीं होती" },
-        { icon: <FaMobileAlt />, title: "सभी डिवाइस पर", desc: "मोबाइल और डेस्कटॉप दोनों पर इस्तेमाल करें" },
-        { icon: <FaArrowsAltH />, title: "कस्टम डाइमेंशन", desc: "इच्छित चौड़ाई के अनुसार रीसेज करें" },
-        { icon: <FaArrowsAltV />, title: "आस्पेक्ट लॉक", desc: "मूल अनुपात बनाए रखें या स्वतंत्र रूप से बदलें" },
-        { icon: <FaHeart />, title: "फ्री & आसान", desc: "कोई साइनअप नहीं, सभी के लिए सरल इंटरफेस" },
-      ],
-    },
+  // Drag & Drop Handlers
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleImage(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const img = new Image();
-        img.src = ev.target?.result as string;
-        img.onload = () => {
-          setOriginalWidth(img.width);
-          setOriginalHeight(img.height);
-          setWidth(img.width);
-          setHeight(img.height);
-        };
-        setImage(ev.target?.result as string);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-      setResizedImage(null);
+      handleImage(e.target.files[0]);
     }
+  };
+
+  const handleImage = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload a valid image file");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Image too large (max 10MB)");
+      return;
+    }
+
+    setFileName(file.name.split(".")[0]);
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.src = ev.target?.result as string;
+      img.onload = () => {
+        setOriginalWidth(img.width);
+        setOriginalHeight(img.height);
+        setWidth(img.width);
+        setHeight(img.height);
+        setResizedImage(null);
+      };
+      setImage(ev.target?.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   // Auto-resize when image / width / height change
   useEffect(() => {
     if (!image) return;
+    setLoading(true);
     const img = new Image();
     img.src = image;
     img.onload = () => {
@@ -85,11 +73,14 @@ export default function ResizeTool() {
       if (ctx) {
         ctx.drawImage(img, 0, 0, width, height);
         setResizedImage(canvas.toDataURL("image/jpeg", 0.9));
+        setLoading(false);
       }
     };
   }, [image, width, height]);
 
   const handleWidthChange = (value: number) => {
+    if (value < 50) value = 50;
+    if (value > originalWidth) value = originalWidth;
     if (lockAspect && originalWidth && originalHeight) {
       const ratio = originalHeight / originalWidth;
       setWidth(value);
@@ -100,6 +91,8 @@ export default function ResizeTool() {
   };
 
   const handleHeightChange = (value: number) => {
+    if (value < 50) value = 50;
+    if (value > originalHeight) value = originalHeight;
     if (lockAspect && originalWidth && originalHeight) {
       const ratio = originalWidth / originalHeight;
       setHeight(value);
@@ -119,14 +112,18 @@ export default function ResizeTool() {
     <div className="max-w-6xl mx-auto px-6 py-12">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl text-blue-600 font-bold mb-2">{texts.en.title}</h1>
-        <p className="text-gray-600 text-lg md:text-xl">{texts.en.subtitle}</p>
+        <h1 className="text-4xl md:text-5xl text-blue-600 font-bold mb-2">Resize Your Image</h1>
+        <p className="text-gray-600 text-lg md:text-xl">Upload or drag & drop your image</p>
       </div>
 
       {/* Upload & Resize */}
       {!image ? (
-        <div className="bg-white shadow-lg rounded-3xl p-8 text-center border-2 border-dashed border-gray-300 mx-auto max-w-3xl">
-          <p className="text-gray-500 mb-4">{texts.en.subtitle}</p>
+        <div
+          className="bg-white shadow-lg rounded-3xl p-8 text-center border-2 border-dashed border-gray-300 mx-auto max-w-3xl cursor-pointer hover:bg-gray-50 transition"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        >
+          <p className="text-gray-500 mb-4">Drag & drop your image here</p>
           <input
             type="file"
             accept="image/*"
@@ -150,7 +147,8 @@ export default function ResizeTool() {
               alt="Uploaded"
               className="mx-auto rounded-xl border shadow max-h-72"
             />
-            <p className="mt-3 text-green-600 font-medium">{texts.en.uploaded}</p>
+            <p className="mt-3 text-green-600 font-medium">✅ Image uploaded successfully</p>
+            <p className="text-gray-500 mt-2">Original: {originalWidth}px × {originalHeight}px</p>
 
             <input
               type="file"
@@ -174,7 +172,7 @@ export default function ResizeTool() {
 
               <div className="flex gap-4 mb-6 flex-wrap">
                 <div className="flex flex-col w-1/2">
-                  <label className="text-sm text-gray-600 mb-1">{texts.en.width}</label>
+                  <label className="text-sm text-gray-600 mb-1">Width (px)</label>
                   <input
                     type="number"
                     value={width}
@@ -183,7 +181,7 @@ export default function ResizeTool() {
                   />
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <label className="text-sm text-gray-600 mb-1">{texts.en.height}</label>
+                  <label className="text-sm text-gray-600 mb-1">Height (px)</label>
                   <input
                     type="number"
                     value={height}
@@ -199,39 +197,77 @@ export default function ResizeTool() {
                   checked={lockAspect}
                   onChange={(e) => setLockAspect(e.target.checked)}
                 />
-                <span className="text-sm">{texts.en.lock}</span>
+                <span className="text-sm">Maintain aspect ratio</span>
               </label>
 
               <button
                 onClick={resetSize}
                 className="w-full bg-gray-500 text-white py-3 rounded-xl hover:bg-gray-600 font-medium transition"
               >
-                {texts.en.reset}
+                Reset to Original
               </button>
             </div>
 
             {resizedImage && (
               <div className="bg-white shadow-md rounded-3xl p-6 text-center">
                 <h3 className="font-semibold mb-4 text-lg">Resized Image Preview</h3>
-                <img
-                  src={resizedImage}
-                  alt="Resized"
-                  className="mx-auto rounded-xl border shadow mb-6 max-h-80"
-                />
-                <a
-                  href={resizedImage}
-                  download="resized-image.jpg"
-                  className="bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition font-medium shadow-md inline-block"
-                >
-                  {texts.en.download}
-                </a>
+                {loading ? (
+                  <div className="flex justify-center items-center h-48">
+                    <FaSpinner className="animate-spin text-3xl text-blue-600" />
+                  </div>
+                ) : (
+                  <>
+                    <img
+                      src={resizedImage}
+                      alt="Resized"
+                      className="mx-auto rounded-xl border shadow mb-2 max-h-80"
+                    />
+                    <p className="text-gray-500 mb-4">Resized: {width}px × {height}px</p>
+                    <div className="flex justify-center gap-4 flex-wrap">
+                      <a
+                        href={resizedImage}
+                        download={`${fileName}-resized.jpg`}
+                        className="bg-green-600 text-white px-6 py-3 rounded-xl hover:bg-green-700 transition font-medium shadow-md"
+                      >
+                        ⬇ Download JPG
+                      </a>
+                      <a
+                        href={resizedImage.replace("image/jpeg", "image/png")}
+                        download={`${fileName}-resized.png`}
+                        className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition font-medium shadow-md"
+                      >
+                        ⬇ Download PNG
+                      </a>
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
         </div>
       )}
 
-      
+      {/* Features Section */}
+      <div className="mt-16">
+        <h3 className="text-2xl font-semibold text-center mb-8">Why Use Our Resize Tool?</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex flex-col items-center bg-white shadow-md rounded-2xl p-6">
+            <FaBolt className="text-4xl text-blue-600 mb-4" />
+            <h4 className="font-semibold mb-2">Fast Resizing</h4>
+            <p className="text-gray-500 text-center">Resize images in seconds without lag</p>
+          </div>
+          <div className="flex flex-col items-center bg-white shadow-md rounded-2xl p-6">
+            <FaShieldAlt className="text-4xl text-blue-600 mb-4" />
+            <h4 className="font-semibold mb-2">Safe & Secure</h4>
+            <p className="text-gray-500 text-center">Images stay in your browser, never uploaded</p>
+          </div>
+          <div className="flex flex-col items-center bg-white shadow-md rounded-2xl p-6">
+            <FaMobileAlt className="text-4xl text-blue-600 mb-4" />
+            <h4 className="font-semibold mb-2">Responsive Design</h4>
+            <p className="text-gray-500 text-center">Works perfectly on mobile & desktop</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
