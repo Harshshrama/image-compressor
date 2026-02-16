@@ -43,61 +43,62 @@ const tools = [
     icon: <FaCrop className="text-3xl text-blue-600 mb-3" />,
   },
   {
-    name: "Image to PDF",
-    href: "/tools/imagetopdf",
-    desc: "Convert images into PDF files.",
-    icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" />,
+    name: "Word Counter",
+    href: "/tools/wordcounter",
+    desc: "Count words, characters, and more instantly.",
+    icon: <FaHeart className="text-3xl text-blue-600 mb-3" />,
   },
+  
   {
-    name: "Image to Text",
-    href: "/tools/ocr",
-    desc: "Extract text from images using OCR.",
+    name: "Text Case Converter",
+    href: "/tools/text-case-converter",
+    desc: "Convert text to Uppercase, Lowercase, Capitalize, or Sentence case instantly.",
     icon: <FaFileAlt className="text-3xl text-blue-600 mb-3" />,
   },
 ];
 
 // Extra tools to show on top
-const extraTools = [
-  {
-    name: "🗣️ Text to Speech",
-    href: "/tools/textspeech",
-    desc: "Convert text into natural-sounding speech.",
-    icon: <FaRegSmile className="text-3xl text-blue-600 mb-3" />,
-  },
-  {
-    name: "🏷️ Meta Tag Generator",
-    href: "/tools/metatag",
-    desc: "Generate SEO-friendly meta tags for your website.",
-    icon: <FaBolt className="text-3xl text-blue-600 mb-3" />,
-  },
-  {
-    name: "🔗 Open Graph Preview",
-    href: "/tools/opengraph",
-    desc: "Preview how your page looks when shared on social media.",
-    icon: <FaMobileAlt className="text-3xl text-blue-600 mb-3" />,
-  },
-  {
-    name: "✍️ Word Counter",
-    href: "/tools/wordcounter",
-    desc: "Count words, characters, and more instantly.",
-    icon: <FaHeart className="text-3xl text-blue-600 mb-3" />,
-  },
-  {
-    name: "🎨 Color Picker",
-    href: "/tools/colorpicker",
-    desc: "Pick colors easily and get HEX/RGB codes.",
-    icon: <FaShieldAlt className="text-3xl text-blue-600 mb-3" />,
-  },
-  {
-    name: "📑 Excel to PDF",
-    href: "/tools/excelpdf",
-    desc: "Convert Excel files into PDF quickly.",
-    icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" />,
-  },
-];
+// const extraTools = [
+//   {
+//     name: "🗣️ Text to Speech",
+//     href: "/tools/textspeech",
+//     desc: "Convert text into natural-sounding speech.",
+//     icon: <FaRegSmile className="text-3xl text-blue-600 mb-3" />,
+//   },
+//   {
+//     name: "🏷️ Meta Tag Generator",
+//     href: "/tools/metatag",
+//     desc: "Generate SEO-friendly meta tags for your website.",
+//     icon: <FaBolt className="text-3xl text-blue-600 mb-3" />,
+//   },
+//   {
+//     name: "🔗 Open Graph Preview",
+//     href: "/tools/opengraph",
+//     desc: "Preview how your page looks when shared on social media.",
+//     icon: <FaMobileAlt className="text-3xl text-blue-600 mb-3" />,
+//   },
+//   {
+//     name: "Image to PDF",
+//     href: "/tools/imagetopdf",
+//     desc: "Convert images into PDF files.",
+//     icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" />,
+//   },
+//   {
+//     name: "🎨 Color Picker",
+//     href: "/tools/colorpicker",
+//     desc: "Pick colors easily and get HEX/RGB codes.",
+//     icon: <FaShieldAlt className="text-3xl text-blue-600 mb-3" />,
+//   },
+//   {
+//     name: "📑 Excel to PDF",
+//     href: "/tools/excelpdf",
+//     desc: "Convert Excel files into PDF quickly.",
+//     icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" />,
+//   },
+// ];
 
-// Merge extraTools on top of existing tools
-const allTools = [...extraTools, ...tools];
+
+const allTools = [ ...tools];
 
 // Features Section
 const features = [

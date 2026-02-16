@@ -1,12 +1,27 @@
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import Image from "next/image";
+import Link from "next/link";
+
 
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 mt-10">
       <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center md:items-start">
         {/* Left Section */}
+
         <div className="mb-6 md:mb-0 text-center md:text-left">
-          <h2 className="text-2xl font-bold text-white mb-2">ImageTools</h2>
+          <div className="flex items-center gap-2 z-50 relative mb-5">
+            <Link href="/">
+              <Image
+                src="/quotients-footer-logo.svg"
+                alt="Logo"
+                width={300}
+                height={200}
+                className="object-contain rounded cursor-pointer"
+              />
+            </Link>
+          </div>
+
           <p className="text-gray-400 text-sm">
             All your image tools in one place. Compress, resize, convert, and more.
           </p>

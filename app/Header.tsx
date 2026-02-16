@@ -16,16 +16,16 @@ export default function Header() {
   const handleLinkClick = () => setMobileMenuOpen(false);
 
   return (
-    <header className="bg-white border-b shadow-sm fixed top-0 left-0 w-full z-50">
+    <header className="bg-white shadow-sm fixed top-0 left-0 w-full z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
         {/* Logo */}
         <div className="flex items-center gap-2 z-50 relative">
           <Link href="/" onClick={handleLinkClick}>
             <Image
-              src="/black_white_logo.png"
+              src="/header-quotients-logo.svg"
               alt="Logo"
-              width={150}
-              height={150}
+              width={300}
+              height={200}
               className="object-contain rounded cursor-pointer"
             />
           </Link>
@@ -37,10 +37,10 @@ export default function Header() {
           <Link href="/tools/resize" className={linkClass("/tools/resize")}>Resize Image</Link>
           <Link href="/tools/convert" className={linkClass("/tools/convert")}>Convert Image</Link>
           <Link href="/tools/crop" className={linkClass("/tools/crop")}>Crop Image</Link>
-          <Link href="/tools/pdf" className={linkClass("/tools/pdf")}>Image to PDF</Link>
-          <Link href="/tools/ocr" className={linkClass("/tools/ocr")}>Image to Text</Link>
+          <Link href="/tools/wordcounter" className={linkClass("/tools/wordcounter")}>Word Counter</Link>
+          <Link href="/tools/textcaseconverter" className={linkClass("/tools/textcaseconverter")}>Text Converter</Link>
 
-          <div className="relative group">
+          {/* <div className="relative group">
             <button className="flex items-center gap-1 text-gray-700 hover:text-blue-600">
               More Tools <FaChevronDown className="text-xs" />
             </button>
@@ -52,7 +52,7 @@ export default function Header() {
               <Link href="/tools/colorpicker" className={`${linkClass("/tools/colorpicker")} block px-4 py-2 hover:bg-gray-100`}>🎨 Color Picker</Link>
               <Link href="/tools/excelpdf" className={`${linkClass("/tools/excelpdf")} block px-4 py-2 hover:bg-gray-100`}>📑 Excel to PDF</Link>
             </div>
-          </div>
+          </div> */}
         </nav>
 
         {/* Mobile Hamburger Button */}
@@ -71,15 +71,15 @@ export default function Header() {
             <Link href="/tools/resize" className={linkClass("/tools/resize")} onClick={handleLinkClick}>Resize Image</Link>
             <Link href="/tools/convert" className={linkClass("/tools/convert")} onClick={handleLinkClick}>Convert Image</Link>
             <Link href="/tools/crop" className={linkClass("/tools/crop")} onClick={handleLinkClick}>Crop Image</Link>
-            <Link href="/tools/imagetopdf" className={linkClass("/tools/imagetopdf")} onClick={handleLinkClick}>Image to PDF</Link>
-            <Link href="/tools/ocr" className={linkClass("/tools/ocr")} onClick={handleLinkClick}>Image to Text</Link>
+            <Link href="/tools/wordcounter" className={linkClass("/tools/wordcounter")}>Word Counter</Link>
+            <Link href="/tools/textcaseconverter" className={linkClass("/tools/textcaseconverter")} onClick={handleLinkClick}>Text Converter</Link>
             <hr className="border-gray-200 my-4" />
-            <Link href="/tools/textspeech" className={linkClass("/tools/textspeech")} onClick={handleLinkClick}>🗣️ Text to Speech</Link>
+            {/* <Link href="/tools/textspeech" className={linkClass("/tools/textspeech")} onClick={handleLinkClick}>🗣️ Text to Speech</Link>
             <Link href="/tools/metatag" className={linkClass("/tools/metatag")} onClick={handleLinkClick}>🏷️ Meta Tag Generator</Link>
             <Link href="/tools/opengraph" className={linkClass("/tools/opengraph")} onClick={handleLinkClick}>🔗 Open Graph Preview</Link>
             <Link href="/tools/wordcounter" className={linkClass("/tools/wordcounter")} onClick={handleLinkClick}>✍️ Word Counter</Link>
             <Link href="/tools/colorpicker" className={linkClass("/tools/colorpicker")} onClick={handleLinkClick}>🎨 Color Picker</Link>
-            <Link href="/tools/excelpdf" className={linkClass("/tools/excelpdf")} onClick={handleLinkClick}>📑 Excel to PDF</Link>
+            <Link href="/tools/excelpdf" className={linkClass("/tools/excelpdf")} onClick={handleLinkClick}>📑 Excel to PDF</Link> */}
           </div>
         </div>
       )}

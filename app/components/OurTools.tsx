@@ -26,14 +26,14 @@ const tools = [
   { name: "Resize Image", href: "/tools/resize", desc: "Easily resize images online.", icon: <FaExpandArrowsAlt className="text-3xl text-blue-600 mb-3" /> },
   { name: "Convert Image", href: "/tools/convert", desc: "Convert images between formats like JPG, PNG, etc.", icon: <FaExchangeAlt className="text-3xl text-blue-600 mb-3" /> },
   { name: "Crop Image", href: "/tools/crop", desc: "Crop your images instantly.", icon: <FaCrop className="text-3xl text-blue-600 mb-3" /> },
-  { name: "Image to PDF", href: "/tools/imagetopdf", desc: "Convert images into PDF files.", icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" /> },
-  { name: "Image to Text", href: "/tools/ocr", desc: "Extract text from images using OCR.", icon: <FaFileAlt className="text-3xl text-blue-600 mb-3" /> },
-  { name: "Text to Speech", href: "/tools/textspeech", desc: "Convert text into natural-sounding speech.", icon: <FaRegSmile className="text-3xl text-blue-600 mb-3" /> },
-  { name: "Meta Tag Generator", href: "/tools/metatag", desc: "Generate SEO-friendly meta tags for your website.", icon: <FaBolt className="text-3xl text-blue-600 mb-3" /> },
-  { name: "Open Graph Preview", href: "/tools/opengraph", desc: "Preview how your page looks on social media.", icon: <FaMobileAlt className="text-3xl text-blue-600 mb-3" /> },
   { name: "Word Counter", href: "/tools/wordcounter", desc: "Count words, characters, and more instantly.", icon: <FaHeart className="text-3xl text-blue-600 mb-3" /> },
-  { name: "Color Picker", href: "/tools/colorpicker", desc: "Pick colors easily and get HEX/RGB codes.", icon: <FaShieldAlt className="text-3xl text-blue-600 mb-3" /> },
-  { name: "Excel to PDF", href: "/tools/excelpdf", desc: "Convert Excel files into PDF quickly.", icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" /> },
+  { name: "Image to Text", href: "/tools/textcaseconverter", desc: "Extract text from images using OCR.", icon: <FaFileAlt className="text-3xl text-blue-600 mb-3" /> },
+  // { name: "Text to Speech", href: "/tools/textspeech", desc: "Convert text into natural-sounding speech.", icon: <FaRegSmile className="text-3xl text-blue-600 mb-3" /> },
+  // { name: "Meta Tag Generator", href: "/tools/metatag", desc: "Generate SEO-friendly meta tags for your website.", icon: <FaBolt className="text-3xl text-blue-600 mb-3" /> },
+  // { name: "Open Graph Preview", href: "/tools/opengraph", desc: "Preview how your page looks on social media.", icon: <FaMobileAlt className="text-3xl text-blue-600 mb-3" /> },
+  // { name: "Image to PDF", href: "/tools/imagetopdf", desc: "Convert images into PDF files.", icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" /> },
+  // { name: "Color Picker", href: "/tools/colorpicker", desc: "Pick colors easily and get HEX/RGB codes.", icon: <FaShieldAlt className="text-3xl text-blue-600 mb-3" /> },
+  // { name: "Excel to PDF", href: "/tools/excelpdf", desc: "Convert Excel files into PDF quickly.", icon: <FaFilePdf className="text-3xl text-blue-600 mb-3" /> },
 ];
 
 // Features Section (Why Choose Our Tool?)
