@@ -11,6 +11,9 @@ export const compressorMetadata = {
     "Compress WebP",
     "Online Image Tool",
     "Reduce Image Size",
+    "Compressor Image",
+    "MB to KB",
+    "KB to MB",
   ],
   openGraph: {
     title: "Image Compressor - Free JPG, PNG, WebP Tool",
